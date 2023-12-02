@@ -1,11 +1,22 @@
 <template>
   <input type="checkbox" :checked="todo.completed" @click="$emit('updateTodoStatus', index)" />
-  <span :class="{ done: todo.completed }">{{ todo.title }}</span>
+  <span
+    v-if="!todo.editable"
+    :class="{ done: todo.completed }"
+    @click="$emit('startEditing', index)"
+    >{{ todo.title }}</span
+  >
+  <input
+    v-else
+    type="text"
+    :value="todo.title"
+    @blur="$emit('stopEditing', index)"
+    @keyup.enter="$emit('stopEditing', index)"
+  />
   <button @click="$emit('removeTodo', index)">Remove</button>
 </template>
 
 <script lang="ts">
-import type { TodoComment } from 'typescript'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
@@ -17,8 +28,7 @@ export default defineComponent({
       type: Number
     }
   },
-  emits: ['removeTodo', 'updateTodoStatus'],
-  setup() {}
+  emits: ['removeTodo', 'updateTodoStatus', 'startEditing', 'stopEditing']
 })
 </script>
 

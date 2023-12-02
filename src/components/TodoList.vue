@@ -7,6 +7,8 @@
         :index="index"
         @updateTodoStatus="updateTodoStatus"
         @removeTodo="removeTodo"
+        @startEditing="startEditing"
+        @stopEditing="stopEditing"
       />
     </div>
   </span>
@@ -19,6 +21,8 @@
         :index="index"
         @updateTodoStatus="updateTodoStatus"
         @removeTodo="removeTodo"
+        @startEditing="startEditing"
+        @stopEditing="stopEditing"
       />
     </div>
   </span>
@@ -54,11 +58,22 @@ export default defineComponent({
       props.todoList[index].completed = !props.todoList[index].completed
     }
 
+    const startEditing = (index: number) => {
+      props.todoList[index].editable = true
+    }
+
+    const stopEditing = (index: number) => {
+      props.todoList[index].editable = false
+      props.todoList[index].title = event.target.value
+    }
+
     return {
       completedTodos,
       uncompletedTodos,
       removeTodo,
-      updateTodoStatus
+      updateTodoStatus,
+      startEditing,
+      stopEditing
     }
   }
 })

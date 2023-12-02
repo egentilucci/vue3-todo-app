@@ -20,7 +20,8 @@ export default defineComponent({
     const addTodo = () => {
       todoList.value.push({
         title: todo.value,
-        completed: false
+        completed: false,
+        editable: false
       })
 
       console.log(`${todo.value} added to todoList`)
