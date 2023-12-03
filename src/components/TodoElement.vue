@@ -1,10 +1,10 @@
 <template>
-  <input type="checkbox" :checked="todo.completed" @click="$emit('updateTodoStatus', index)" />
+  <input type="checkbox" :checked="todo?.completed" @click="$emit('updateTodoStatus', index)" />
   <span
-    v-if="!todo.editable"
-    :class="{ done: todo.completed }"
+    v-if="!todo?.editable"
+    :class="{ done: todo?.completed }"
     @click="$emit('startEditing', index)"
-    >{{ todo.title }}</span
+    >{{ todo?.title }}</span
   >
   <input
     v-else
