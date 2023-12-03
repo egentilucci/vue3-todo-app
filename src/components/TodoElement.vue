@@ -1,19 +1,16 @@
 <template>
-  <input type="checkbox" :checked="todo?.completed" @click="$emit('updateTodoStatus', index)" />
-  <span
-    v-if="!todo?.editable"
-    :class="{ done: todo?.completed }"
-    @click="$emit('startEditing', index)"
-    >{{ todo?.title }}</span
-  >
+  <input type="checkbox" :checked="todo?.completed" @click="$emit('updateTodoStatus')" />
+  <span v-if="!todo?.editable" :class="{ done: todo?.completed }" @click="$emit('startEditing')">{{
+    todo?.title
+  }}</span>
   <input
     v-else
     type="text"
     :value="todo.title"
-    @blur="$emit('stopEditing', index)"
-    @keyup.enter="$emit('stopEditing', index)"
+    @blur="$emit('stopEditing')"
+    @keyup.enter="$emit('stopEditing')"
   />
-  <button @click="$emit('removeTodo', index)">Remove</button>
+  <button @click="$emit('removeTodo')">Remove</button>
 </template>
 
 <script lang="ts">
@@ -23,9 +20,6 @@ export default defineComponent({
   props: {
     todo: {
       type: Object
-    },
-    index: {
-      type: Number
     }
   },
   emits: ['removeTodo', 'updateTodoStatus', 'startEditing', 'stopEditing']
