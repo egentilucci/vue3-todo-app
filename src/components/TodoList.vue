@@ -22,7 +22,7 @@
         @updateTodoStatus="$emit('updateTodoStatus', index)"
         @removeTodo="$emit('removeTodo', index)"
         @startEditing="$emit('startEditing', index)"
-        @stopEditing="$emit('stopEditing', $event.target.value, index)"
+        @stopEditing="$emit('stopEditing', index)"
       />
     </div>
   </span>
