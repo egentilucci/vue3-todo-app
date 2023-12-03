@@ -47,6 +47,7 @@ export default defineComponent({
     }
 
     const removeTodo = (index: number) => {
+      console.log(`removing ${todoList?.value[index].title} from todoList`)
       todoList?.value.splice(index, 1)
     }
 
