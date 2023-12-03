@@ -1,28 +1,28 @@
 <template>
   <div v-show="uncompletedTodos">TO DO [{{ uncompletedTodos }}]</div>
-  <span v-for="(todo, index) in todoList">
+  <span v-for="(todo, index) in todoList" :key="index">
     <div v-if="todo.completed === false">
-      <Todo
+      <TodoElement
         :todo="todo"
         :index="index"
-        @updateTodoStatus="updateTodoStatus"
-        @removeTodo="removeTodo"
-        @startEditing="startEditing"
-        @stopEditing="stopEditing"
+        @updateTodoStatus="$emit('updateTodoStatus', index)"
+        @removeTodo="$emit('removeTodo', index)"
+        @startEditing="$emit('startEditing', index)"
+        @stopEditing="$emit('stopEditing', index)"
       />
     </div>
   </span>
 
   <div v-show="completedTodos">DONE [{{ completedTodos }}]</div>
-  <span v-for="(todo, index) in todoList">
+  <span v-for="(todo, index) in todoList" :key="index">
     <div v-if="todo.completed === true">
-      <Todo
+      <TodoElement
         :todo="todo"
         :index="index"
-        @updateTodoStatus="updateTodoStatus"
-        @removeTodo="removeTodo"
-        @startEditing="startEditing"
-        @stopEditing="stopEditing"
+        @updateTodoStatus="$emit('updateTodoStatus', index)"
+        @removeTodo="$emit('removeTodo', index)"
+        @startEditing="$emit('startEditing', index)"
+        @stopEditing="$emit('stopEditing', $event.target.value, index)"
       />
     </div>
   </span>
@@ -30,50 +30,29 @@
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
-import Todo from './Todo.vue'
+import { type TodoType } from '../interfaces/interfaces'
+import TodoElement from './TodoElement.vue'
 
 export default defineComponent({
   props: {
     todoList: {
-      type: Array
+      type: Array<TodoType>
     }
   },
-  components: { Todo },
+  components: { TodoElement },
+  emits: ['removeTodo', 'updateTodoStatus', 'startEditing', 'stopEditing'],
   setup(props) {
     const completedTodos = computed(() => {
-      return props.todoList.filter((e) => e.completed === true).length
+      return props?.todoList?.filter((e) => e.completed === true).length
     })
 
     const uncompletedTodos = computed(() => {
-      return props.todoList.filter((e) => e.completed === false).length
+      return props?.todoList?.filter((e) => e.completed === false).length
     })
-
-    const removeTodo = (index: number) => {
-      console.log(`${props.todoList[index].title} removed from todoList`)
-
-      props.todoList.splice(index, 1)
-    }
-
-    const updateTodoStatus = (index: number) => {
-      props.todoList[index].completed = !props.todoList[index].completed
-    }
-
-    const startEditing = (index: number) => {
-      props.todoList[index].editable = true
-    }
-
-    const stopEditing = (index: number) => {
-      props.todoList[index].editable = false
-      props.todoList[index].title = event.target.value
-    }
 
     return {
       completedTodos,
-      uncompletedTodos,
-      removeTodo,
-      updateTodoStatus,
-      startEditing,
-      stopEditing
+      uncompletedTodos
     }
   }
 })
